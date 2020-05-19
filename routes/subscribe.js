@@ -1,7 +1,8 @@
 const express = require("express");
-const router = express.Router();
+const routerCreateMembership = express.Router();
 const controllerCreateMembership = require("../controllers/createMembership");
 
-router.post("/testPost", controllerCreateMembership.createMembership);
+//Souscription
+routerCreateMembership.post("/", controllerCreateMembership.subscribeData);
 
-module.exports = router;
+module.exports = routerCreateMembership;
