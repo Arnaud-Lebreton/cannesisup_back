@@ -1,18 +1,32 @@
 const jwt = require("jsonwebtoken");
+const MemberShip = require("../models/membership");
 
 module.exports = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
-    const userId = decodedToken.userId;
-    if (req.body.userId && req.body.userId !== userId) {
-      throw "Invalid user ID";
-    } else {
-      next();
+    const [userId, token] = [
+      req.body.userId,
+      req.header.authorization.split(" ")[1],
+    ];
+    const decodedToken = jwt.verify(token, "ABCDEFGHIJ");
+
+    if (userId && userId === decodedToken.userId) {
+      MemberShip.findOne({ _id: userId }, (err, user) => {
+        if (err) {
+          res.status(500).json({ message: "error" });
+          return;
+        }
+        if (!user) {
+          res.status(401).json({ message: "Accès interdit" });
+          return;
+        }
+
+        req.user = user;
+        next();
+      });
     }
   } catch {
     res.status(401).json({
-      error: new Error("Invalid request!"),
+      message: "Accès interdit",
     });
   }
 };

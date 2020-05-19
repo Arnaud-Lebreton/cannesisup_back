@@ -8,15 +8,9 @@ const logger = require("morgan");
 const cors = require("./middlewares/cors");
 
 /***** Constantes Routeurs *****/
-const annuaire = require("./routes/annuaire");
-const profil = require("./routes/profil");
-const dashbord = require("./routes/dashbord");
+const subscribe = require("./routes/subscribe");
 
-var app = express();
-
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+const app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -26,9 +20,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors.handle);
 
 /***** Lancement des Routeurs *****/
-app.use("/annuaire", annuaire);
-app.use("/appartement", profil);
-app.use("/reservation", dashboard);
-app.use("/api/auth", userRoutes);
+app.use("/signUp", subscribe);
 
 module.exports = app;
