@@ -1,8 +1,9 @@
+const SuperAdmin = require("../models/SuperAdmin");
 const MemberShip = require("../models/Membership");
 const bcrypt = require("bcrypt");
 
-const controllerCreateMembership = {
-  subscribeData: (req, res) => {
+const signUp = {
+  signUpMembership: (req, res, next) => {
     const membershipHashPassword = req.body.membershipHashPassword;
     const hash = bcrypt.hashSync(membershipHashPassword, 10);
     const newMember = new MemberShip({
@@ -41,24 +42,22 @@ const controllerCreateMembership = {
         return;
       }
     });
-    res.json("Le massage a été enregisté");
+    res.json({ message: "Enregistrement effectué" });
   },
-};
-module.exports = controllerCreateMembership;
-
-/*const MemberShip = require("../models/Membership");
-const controllerCreateMembership = {
-
-  subscribeData: (req, res) => {
-    let donneeRecu = req.body; //Récupération du body
-    console.log(donneeRecu);
-    MemberShip.insertMany(donneeRecu, (err, res) => {
+  signUpSuperAdmin: (req, res, next) => {
+    const superAdminHashPassword = req.body.superAdminHashPassword;
+    const hash = bcrypt.hashSync(superAdminHashPassword, 10);
+    const newSuperAdmin = new SuperAdmin({
+      superAdminEmail: req.body.superAdminEmail,
+      superAdminHashPassword: hash,
+    });
+    SuperAdmin.insertMany(newSuperAdmin, (err, res) => {
       if (err) {
         res.status(500).json({});
         return;
       }
     });
-    res.json("Le massage a été enregisté");
+    res.json("Enregistrement effectué");
   },
 };
-module.exports = controllerCreateMembership;*/
+module.exports = signUp;

@@ -6,9 +6,15 @@ const logger = require("morgan");
 
 /***** Constantes middlewares *****/
 const cors = require("./middlewares/cors");
+const auth = require("./middlewares/authorization");
 
 /***** Constantes Routeurs *****/
-const subscribe = require("./routes/subscribe");
+const signUp = require("./routes/signUp");
+const singIn = require("./routes/singIn");
+const dashboard = require("./routes/dashboard");
+const profil = require("./routes/profil");
+const annuaire = require("./routes/annuaire");
+const mail = require("./routes/mail");
 
 const app = express();
 
@@ -20,6 +26,11 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors.handle);
 
 /***** Lancement des Routeurs *****/
-app.use("/signUp", subscribe);
+app.use("/signUp", signUp); // accès à l'inscription
+app.use("/signIn", singIn); //acces à la connexion
+app.use("/dashboard", dashboard); // accès aux paramètres dashboard ==> Admin uniquement
+app.use("/profil", profil); // accès aux profils
+app.use("/annuaire", annuaire); // accès à l'annuaire et au profil
+app.use("/mail", mail); // accès à l'annuaire et au profil
 
 module.exports = app;

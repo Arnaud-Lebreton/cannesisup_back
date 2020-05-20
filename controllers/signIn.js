@@ -1,16 +1,92 @@
-const MemberShip = require("../models/Membership");
+const Membership = require("../models/Membership");
+const SuperAdmin = require("../models/SuperAdmin");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const controllerSignIn = {
-  SignIn: (req, res) => {
-    const membershipHashPassword = req.body.membershipHashPassword;
+const signIn = {
+  signInMembership: (req, res, next) => {
+    const [membershipEmail, membershipHashPassword] = [
+      req.body.membershipEmail,
+      req.body.membershipHashPassword,
+    ];
 
-    MemberShip.insertMany(newMember, (err, res) => {
-      if (err) {
-        res.status(500).json({});
-        return;
-      }
-    });
-    res.json("Le massage a été enregisté");
+    Membership.findOne({ membershipEmail: membershipEmail })
+      .then((user) => {
+        if (!user) {
+          return res.status(401).json({ message: "Membre inexistant" });
+        }
+        bcrypt
+          .compare(membershipHashPassword, user.membershipHashPassword)
+          .then((valid) => {
+            if (!valid) {
+              return res
+                .status(401)
+                .json({ message: "Mot de passe incorrect" });
+            }
+            const token = jwt.sign(
+              {
+                membershipId: user._id,
+              },
+              "ABCDEFGHIJ",
+              {
+                expiresIn: "24h",
+              }
+            );
+            res.status(200).json({
+              //user: user,
+              membershipId: user._id,
+              token: token,
+            });
+          })
+          .catch((error) => {
+            res.status(500).json({ error: error });
+          });
+      })
+      .catch((error) => {
+        res.status(500).json({ error: error });
+      });
+  },
+
+  signInSuperAdmin: (req, res, next) => {
+    const [superAdminEmail, superAdminHashPassword] = [
+      req.body.superAdminEmail,
+      req.body.superAdminHashPassword,
+    ];
+
+    SuperAdmin.findOne({ superAdminEmail: superAdminEmail })
+      .then((user) => {
+        if (!user) {
+          return res.status(401).json({ message: "Membre inexistant" });
+        }
+        bcrypt
+          .compare(superAdminHashPassword, user.superAdminHashPassword)
+          .then((valid) => {
+            if (!valid) {
+              return res
+                .status(401)
+                .json({ message: "Mot de passe incorrect" });
+            }
+            const token = jwt.sign(
+              {
+                superAdminId: user._id,
+              },
+              "ABCDEFGHIJ",
+              {
+                expiresIn: "24h",
+              }
+            );
+            res.status(200).json({
+              superAdminId: user._id,
+              token: token,
+            });
+          })
+          .catch((error) => {
+            res.status(500).json({ error: error });
+          });
+      })
+      .catch((error) => {
+        res.status(500).json({ error: error });
+      });
   },
 };
-module.exports = controllerSignIn;
+module.exports = signIn;
