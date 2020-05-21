@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const dashboardColumnListInitSchema = new mongoose.Schema({
-  memberId: String,
   memberActive: String,
   membershipEmail: String,
   requestDate: String,
@@ -32,7 +31,6 @@ const dashboardColumnListInitSchema = new mongoose.Schema({
 });
 
 const dashboardColumnListShowSchema = new mongoose.Schema({
-  memberId: String,
   memberActive: String,
   membershipEmail: String,
   requestDate: String,
