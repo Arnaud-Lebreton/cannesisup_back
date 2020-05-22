@@ -2,6 +2,7 @@ const Membership = require("../models/Membership");
 const SuperAdmin = require("../models/SuperAdmin");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const config = require("../config.json");
 
 const signIn = {
   signInMembership: (req, res, next) => {
@@ -27,7 +28,7 @@ const signIn = {
               {
                 membershipId: user._id,
               },
-              "ABCDEFGHIJ",
+              config.tokenCode,
               {
                 expiresIn: "24h",
               }
@@ -46,7 +47,6 @@ const signIn = {
         res.status(500).json({ error: error });
       });
   },
-
   signInSuperAdmin: (req, res, next) => {
     const [superAdminEmail, superAdminHashPassword] = [
       req.body.superAdminEmail,
@@ -70,7 +70,7 @@ const signIn = {
               {
                 superAdminId: user._id,
               },
-              "ABCDEFGHIJ",
+              config.tokenCode,
               {
                 expiresIn: "24h",
               }

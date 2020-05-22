@@ -1,7 +1,7 @@
 const Dashboard = require("../models/Dashboard");
 
 const dashboard = {
-  createDashboard: (req, res, next) => {
+  insertDashboard: (req, res, next) => {
     const newDashboard = new Dashboard({
       dashboardColumnListInit: req.body.dashboardColumnListInit,
       dashboardColumnListShow: req.body.dashboardColumnListShow,
@@ -15,7 +15,7 @@ const dashboard = {
     });
     res.json("Enregistrement effectué");
   },
-  uploadDashboard: (req, res) => {
+  findDashboard: (req, res) => {
     Dashboard.find({}, (err, data) => {
       if (err) {
         res.status(500).json({});
@@ -24,7 +24,7 @@ const dashboard = {
       res.json(data);
     });
   },
-  saveDashboard: (req, res) => {
+  updateDashboard: (req, res) => {
     const dashboardPagination = req.body.dashboardPagination;
     const dashboardColumnListShow = req.body.dashboardColumnListShow;
     console.log(dashboardPagination);
