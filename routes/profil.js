@@ -1,6 +1,7 @@
 const express = require("express");
 const routerProfil = express.Router();
 const profil = require("../controllers/profil");
+const auth = require("../middlewares/authorization");
 
 //Récupération de la collection membre avec id
 routerProfil.get("/insertSingle", profil.insertSingleProfil);

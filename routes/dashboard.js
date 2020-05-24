@@ -1,6 +1,7 @@
 const express = require("express");
 const routerDashboard = express.Router();
 const dashboard = require("../controllers/dashboard");
+const auth = require("../middlewares/authorization");
 
 //Création de la collection dashboard
 routerDashboard.post("/create", dashboard.insertDashboard);
