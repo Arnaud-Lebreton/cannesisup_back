@@ -4,7 +4,7 @@ const profil = require("../controllers/profil");
 const auth = require("../middlewares/authorization");
 
 //Récupération de la collection membre avec id
-routerProfil.get("/insertSingle", profil.insertSingleProfil);
+routerProfil.post("/insertSingle", profil.insertSingleProfil);
 //Récupération de la collection membre avec id
 routerProfil.get("/uploadSingle", profil.findSingleProfil);
 //Récupération de la collection des membres actif / inactif

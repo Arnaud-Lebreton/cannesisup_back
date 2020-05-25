@@ -13,7 +13,7 @@ const profil = {
         data[element] = " ";
       }
     }
-    MemberShip.insertMany(data, (err, res) => {
+    Membership.insertMany(data, (err, res) => {
       if (err) {
         res.status(500).json({});
         return;
