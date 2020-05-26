@@ -64,8 +64,18 @@ const profil = {
     });
     res.json({ message: "Enregistrement effectué" });
   },
-  findSingleProfil: (req, res) => {
+  findSingleProfilQuery: (req, res) => {
     const userId = req.query.id;
+    Membership.find({ _id: userId }, (err, data) => {
+      if (err) {
+        res.status(500).json({});
+        return;
+      }
+      res.json(data);
+    });
+  },
+  findSingleProfilBody: (req, res) => {
+    const userId = req.body._id;
     Membership.find({ _id: userId }, (err, data) => {
       if (err) {
         res.status(500).json({});
@@ -116,20 +126,20 @@ const profil = {
     });
   },
   updateMdp: (req, res) => {
-    const [userId, membershipHashPassword] = [
-      req.body._id,
+    const [userMail, membershipHashPassword] = [
+      req.body.membershipEmail,
       req.body.membershipHashPassword,
     ];
     const hash = bcrypt.hashSync(membershipHashPassword, 10);
     Membership.updateOne(
-      { _id: userId },
+      { membershipEmail: userMail },
       { membershipHashPassword: hash },
       (err, data) => {
         if (err) {
           res.status(500).json({});
           return;
         }
-        res.json(data);
+        res.json({ message: "mot de passe modifié" });
       }
     );
   },

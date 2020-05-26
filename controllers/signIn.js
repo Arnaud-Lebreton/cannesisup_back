@@ -6,6 +6,7 @@ const config = require("../config.json");
 
 const signIn = {
   signInMembership: (req, res, next) => {
+    console.log("test route");
     const [membershipEmail, membershipHashPassword] = [
       req.body.membershipEmail,
       req.body.membershipHashPassword,

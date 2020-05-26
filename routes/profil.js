@@ -7,7 +7,9 @@ const multer = require("../middlewares/multer");
 //Récupération de la collection membre avec id
 routerProfil.post("/insertSingle", multer, profil.insertSingleProfil);
 //Récupération de la collection membre avec id
-routerProfil.get("/uploadSingle", profil.findSingleProfil);
+routerProfil.get("/uploadSingle", profil.findSingleProfilQuery);
+//Récupération de la collection membre avec id
+routerProfil.post("/uploadSingle", auth, profil.findSingleProfilBody);
 //Récupération de la collection des membres actif / inactif
 routerProfil.get("/uploadAll", profil.findAllProfil);
 //Récupération de la collection des membres actif / inactif
