@@ -4,6 +4,7 @@ const MIME_TYPE = {
   "image/jpg": "jpg",
   "image/jpeg": "jpeg",
   "image/png": "png",
+  "application/pdf": "pdf",
 };
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -21,5 +22,8 @@ const storage = multer.diskStorage({
 });
 
 module.exports = multer({ storage: storage }).fields([
-  { name: "image", maxCount: 1 },
+  { name: "compagnyLogo", maxCount: 1 },
+  { name: "compagnyCoverPhoto", maxCount: 1 },
+  { name: "compagnyRepresentPhoto", maxCount: 1 },
+  { name: "compagnyPresentationFile", maxCount: 1 },
 ]);

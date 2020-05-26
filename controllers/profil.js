@@ -5,15 +5,58 @@ const profil = {
   insertSingleProfil: (req, res, next) => {
     const membershipHashPassword = req.body.membershipHashPassword;
     const hash = bcrypt.hashSync(membershipHashPassword, 10);
-    const data = req.body;
-    data.membershipHashPassword = hash;
-    data.memberActive = "non";
-    for (element in data) {
-      if (data[element] === "") {
-        data[element] = " ";
-      }
+    const requestDate = new Date();
+    let charterSigning = req.body.charterSigning;
+    if (charterSigning) {
+      charterSigning = "oui";
     }
-    Membership.insertMany(data, (err, res) => {
+    let RGPDSigning = req.body.RGPDSigning;
+    if (RGPDSigning) {
+      RGPDSigning = "oui";
+    }
+
+    const newMembership = new Membership({
+      membershipEmail: req.body.membershipEmail,
+      membershipHashPassword: hash,
+      memberActive: "non",
+      requestDate: requestDate,
+      validationDate: " ",
+      compagnyRepresentFirstname: req.body.compagnyRepresentFirstname,
+      compagnyRepresentLastname: req.body.compagnyRepresentLastname,
+      compagnyRepresentFunction: req.body.compagnyRepresentFunction,
+      compagnyRepresentQuote: req.body.compagnyRepresentQuote,
+      compagnyName: req.body.compagnyName,
+      compagnyAdress: req.body.compagnyAdress,
+      compagnyAdditionalAdress: req.body.compagnyAdditionalAdress,
+      compagnyPostalCode: req.body.compagnyPostalCode,
+      compagnyCity: req.body.compagnyCity,
+      compagnyTelephone: req.body.compagnyTelephone,
+      compagnyEmail: req.body.compagnyEmail,
+      compagnyWebside: req.body.compagnyWebside,
+      compagnyFacebook: req.body.compagnyFacebook,
+      compagnyInstagram: req.body.compagnyInstagram,
+      compagnyLinkedin: req.body.compagnyLinkedin,
+      compagnyTwitter: req.body.compagnyTwitter,
+      compagnyActivityArea: req.body.compagnyActivityArea,
+      compagnyActivityDescription: req.body.compagnyActivityDescription,
+      charterSigning: charterSigning,
+      RGPDSigning: RGPDSigning,
+      paymentMode: req.body.paymentMode,
+      compagnyLogo: `${req.protocol}://${req.get("host")}/images/${
+        req.files.compagnyLogo[0].filename
+      }`,
+      compagnyCoverPhoto: `${req.protocol}://${req.get("host")}/images/${
+        req.files.compagnyCoverPhoto[0].filename
+      }`,
+      compagnyRepresentPhoto: `${req.protocol}://${req.get("host")}/images/${
+        req.files.compagnyRepresentPhoto[0].filename
+      }`,
+      compagnyPresentationFile: `${req.protocol}://${req.get("host")}/images/${
+        req.files.compagnyPresentationFile[0].filename
+      }`,
+    });
+
+    Membership.insertMany(newMembership, (err, res) => {
       if (err) {
         res.status(500).json({});
         return;
@@ -49,9 +92,11 @@ const profil = {
       res.json(data);
     });
   },
-  updateProfil: (req, res) => {
+  updateActivateProfil: (req, res) => {
     let userId = req.body._id;
+    delete req.body._id;
     let list = req.body;
+
     Membership.updateOne({ _id: userId }, { $set: list }, (err) => {
       if (err) {
         res.status(500).json({});

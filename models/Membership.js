@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   membershipHashPassword: String,
   requestDate: String,
   validationDate: String,
-  compagnyRepresentName: String,
+  compagnyRepresentFirstname: String,
   compagnyRepresentLastname: String,
   compagnyRepresentFunction: String,
   compagnyRepresentQuote: String,
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   compagnyAdditionalAdress: String,
   compagnyPostalCode: String,
   compagnyCity: String,
-  compagnyTelephon: String,
+  compagnyTelephone: String,
   compagnyEmail: String,
   compagnyWebside: String,
   compagnyFacebook: String,
@@ -29,6 +29,8 @@ const userSchema = new mongoose.Schema({
   compagnyCoverPhoto: String,
   compagnyPresentationFile: String,
   charterSigning: String,
+  RGPDSigning: String,
+  paymentMode: String,
 });
 
 module.exports = mongoose.model("MemberShip", userSchema);
