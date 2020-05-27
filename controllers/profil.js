@@ -1,11 +1,16 @@
 const Membership = require("../models/Membership");
+const SuperAdmin = require("../models/SuperAdmin");
+const sendMail = require("../middlewares/mail");
 const bcrypt = require("bcrypt");
+const moment = require("moment");
+const fs = require("fs");
 
 const profil = {
   insertSingleProfil: (req, res, next) => {
     const membershipHashPassword = req.body.membershipHashPassword;
     const hash = bcrypt.hashSync(membershipHashPassword, 10);
-    const requestDate = new Date();
+    const requestDate = moment().format("DD/MM/YYYY");
+
     let charterSigning = req.body.charterSigning;
     if (charterSigning) {
       charterSigning = "oui";
@@ -75,7 +80,12 @@ const profil = {
     });
   },
   findSingleProfilBody: (req, res) => {
-    const userId = req.body._id;
+    let userId;
+    if (req.body._idMembership) {
+      userId = req.body._idMembership;
+    } else {
+      userId = req.body._id;
+    }
     Membership.find({ _id: userId }, (err, data) => {
       if (err) {
         res.status(500).json({});
@@ -106,6 +116,7 @@ const profil = {
     let userId = req.body._id;
     delete req.body._id;
     let list = req.body;
+    console.log(list);
 
     Membership.updateOne({ _id: userId }, { $set: list }, (err) => {
       if (err) {
@@ -117,15 +128,34 @@ const profil = {
   },
   deleteProfil: (req, res) => {
     const userId = req.body._id;
-    Membership.deleteOne({ _id: userId }, (err, data) => {
+    Membership.findOne({ _id: userId }, (err, data) => {
       if (err) {
-        res.status(500).json({});
+        res.status(500).json({ message: "error" });
         return;
       }
-      res.json({ message: "Suppression du profil " + userId });
+      const compagnyLogo = data.compagnyLogo.split("/images/")[1];
+      const compagnyCoverPhoto = data.compagnyCoverPhoto.split("/images/")[1];
+      const compagnyRepresentPhoto = data.compagnyRepresentPhoto.split(
+        "/images/"
+      )[1];
+      const compagnyPresentationFile = data.compagnyPresentationFile.split(
+        "/images/"
+      )[1];
+      fs.unlinkSync(`images/${compagnyLogo}`);
+      fs.unlinkSync(`images/${compagnyCoverPhoto}`);
+      fs.unlinkSync(`images/${compagnyRepresentPhoto}`);
+      fs.unlinkSync(`images/${compagnyPresentationFile}`);
+      console.log(userId);
+      Membership.deleteOne({ _id: userId }, (err, res) => {
+        if (err) {
+          res.status(500).json({});
+          return;
+        }
+      });
+      res.json({ message: "suppression effectuée  " + userId });
     });
   },
-  updateMdp: (req, res) => {
+  updateMdpMember: (req, res) => {
     const [userMail, membershipHashPassword] = [
       req.body.membershipEmail,
       req.body.membershipHashPassword,
@@ -139,7 +169,31 @@ const profil = {
           res.status(500).json({});
           return;
         }
-        res.json({ message: "mot de passe modifié" });
+        console.log(data);
+        res.status(200).json({
+          memberShipId: data,
+        });
+      }
+    );
+  },
+  updateMdpAdmin: (req, res) => {
+    const [userMail, superAdminHashPassword] = [
+      req.body.superAdminEmail,
+      req.body.superAdminHashPassword,
+    ];
+    const hash = bcrypt.hashSync(superAdminHashPassword, 10);
+    SuperAdmin.updateOne(
+      { superAdminEmail: userMail },
+      { superAdminHashPassword: hash },
+      (err, data) => {
+        if (err) {
+          res.status(500).json({});
+          return;
+        }
+        console.log(data);
+        res.status(200).json({
+          superAdminId: data,
+        });
       }
     );
   },

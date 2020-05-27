@@ -13,6 +13,7 @@ const dashboard = require("./routes/dashboard");
 const profil = require("./routes/profil");
 const signIn = require("./routes/singIn");
 const testMulter = require("./routes/testMulter");
+const mailing = require("./routes/mailing");
 
 const app = express();
 
@@ -28,6 +29,9 @@ app.use("/admin", admin); // accès à l'inscription
 app.use("/dashboard", dashboard); // accès aux paramètres dashboard ==> Admin uniquement
 app.use("/profil", profil); // accès aux profils
 app.use("/signIn", signIn); // accès aux profil
+
+//Mail
+app.use("/mail", mailing);
 
 //Test Multer //
 app.use("/testMulter", testMulter); // accès aux profil

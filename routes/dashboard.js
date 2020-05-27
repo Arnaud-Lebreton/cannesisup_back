@@ -4,9 +4,9 @@ const dashboard = require("../controllers/dashboard");
 const auth = require("../middlewares/authorization");
 
 //Création de la collection dashboard
-routerDashboard.post("/create", dashboard.insertDashboard);
+routerDashboard.post("/create", auth, dashboard.insertDashboard);
 //Récupération de la collection dashboard
-routerDashboard.get("/upload", dashboard.findDashboard);
+routerDashboard.post("/upload", auth, dashboard.findDashboard);
 //Modification de la collection dashboard
-routerDashboard.put("/save", dashboard.updateDashboard);
+routerDashboard.put("/save", auth, dashboard.updateDashboard);
 module.exports = routerDashboard;

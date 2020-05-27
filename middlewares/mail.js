@@ -2,12 +2,12 @@ const nodemailer = require("nodemailer");
 
 const sendMail = (email, subject, html) => {
   let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: true,
+    host: "smtp.mailtrap.io",
+    port: 2525,
+    secure: false,
     auth: {
-      user: testAccount.user, // generated ethereal user
-      pass: testAccount.pass, // generated ethereal password
+      user: "dbd260f6fce06a", // generated ethereal user
+      pass: "560360c51eb289", // generated ethereal password
     },
   });
 

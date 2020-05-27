@@ -11,16 +11,17 @@ routerProfil.get("/uploadSingle", profil.findSingleProfilQuery);
 //Récupération de la collection membre avec id
 routerProfil.post("/uploadSingle", auth, profil.findSingleProfilBody);
 //Récupération de la collection des membres actif / inactif
-routerProfil.get("/uploadAll", profil.findAllProfil);
+routerProfil.post("/uploadAll", auth, profil.findAllProfil);
 //Récupération de la collection des membres actif / inactif
 routerProfil.get("/uploadAllActive", profil.findAllActiveProfil);
 //Activation d'un membre
-routerProfil.put("/activate", profil.updateActivateProfil);
+routerProfil.put("/activate", auth, profil.updateActivateProfil);
 //Modification de la collection membre
 /*routerProfil.put("/save", profil.updateProfil);*/
 //Modification du mot de passe du membre
 routerProfil.delete("/delete", profil.deleteProfil);
 //Modification du mot de passe du membre
-routerProfil.put("/mdp", profil.updateMdp);
-
+routerProfil.put("/mdp", profil.updateMdpMember);
+//Modification du mot de passe du membre
+routerProfil.put("/mdpAdmin", profil.updateMdpAdmin);
 module.exports = routerProfil;

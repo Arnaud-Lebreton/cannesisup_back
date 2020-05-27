@@ -79,6 +79,7 @@ const signIn = {
             res.status(200).json({
               superAdminId: user._id,
               token: token,
+              statut: "admin",
             });
           })
           .catch((error) => {
