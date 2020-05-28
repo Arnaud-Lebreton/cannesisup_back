@@ -33,8 +33,10 @@ app.use("/signIn", signIn); // accès aux profil
 //Mail
 app.use("/mail", mailing);
 
+//Chargement image
+app.use("/images", express.static(path.join(__dirname, "images")));
+
 //Test Multer //
 app.use("/testMulter", testMulter); // accès aux profil
-app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;

@@ -19,7 +19,7 @@ routerProfil.put("/activate", auth, profil.updateActivateProfil);
 //Modification de la collection membre
 /*routerProfil.put("/save", profil.updateProfil);*/
 //Modification du mot de passe du membre
-routerProfil.delete("/delete", profil.deleteProfil);
+routerProfil.delete("/delete", auth, profil.deleteProfil);
 //Modification du mot de passe du membre
 routerProfil.put("/mdp", profil.updateMdpMember);
 //Modification du mot de passe du membre
