@@ -7,6 +7,7 @@ const fs = require("fs");
 
 const profil = {
   insertSingleProfil: (req, res, next) => {
+    console.log(req.body.membershipHashPassword);
     const membershipHashPassword = req.body.membershipHashPassword;
     const hash = bcrypt.hashSync(membershipHashPassword, 10);
     const requestDate = moment().format("DD/MM/YYYY");
