@@ -126,6 +126,65 @@ const profil = {
       res.json({ message: "Enregistrement effectué" });
     });
   },
+  updateProfil: (req, res) => {
+    const userId = req.body._id;
+    //Injecter la nouvelle adresse dans le body
+    const compagnyLogoNew = `${req.protocol}://${req.get("host")}/images/${
+      req.files.compagnyLogo[0].filename
+    }`;
+    const compagnyCoverPhotoNew = `${req.protocol}://${req.get(
+      "host"
+    )}/images/${req.files.compagnyCoverPhoto[0].filename}`;
+    req.body.compagnyCoverPhoto = compagnyCoverPhotoNew;
+    const compagnyRepresentPhotoNew = `${req.protocol}://${req.get(
+      "host"
+    )}/images/${req.files.compagnyRepresentPhoto[0].filename}`;
+    req.body.compagnyRepresentPhoto = compagnyRepresentPhotoNew;
+    const compagnyPresentationFileNew = `${req.protocol}://${req.get(
+      "host"
+    )}/images/${req.files.compagnyPresentationFile[0].filename}`;
+    req.body.compagnyPresentationFile = compagnyPresentationFileNew;
+    /*
+    //Comparaison avec les fichiers existants
+    Membership.findOne({ _id: userId }, (err, data) => {
+      if (err) {
+        res.status(500).json({});
+        return;
+      }
+      //Récupération d'adresse de l'image initiale
+      const compagnyLogoInit = data.compagnyLogo.split("/images/")[1];
+      //Supression de l'image initiale
+      //fs.unlinkSync(`images/${compagnyLogoInit}`);
+      //Injecter la nouvelle adresse dans le body
+
+      req.body.compagnyLogo = compagnyLogoNew;
+
+      //Récupération d'adresse de l'image initiale
+      const compagnyCoverPhotoInit = data.compagnyCoverPhoto.split(
+        "/images/"
+      )[1];
+      //Supression de l'image initiale
+      //fs.unlinkSync(`images/${compagnyCoverPhotoInit}`);
+      //Injecter la nouvelle adresse dans le body
+
+      //Récupération d'adresse de l'image initiale
+      const compagnyRepresentPhotoInit = data.compagnyRepresentPhoto.split(
+        "/images/"
+      )[1];
+      //Supression de l'image initiale
+      //fs.unlinkSync(`images/${compagnyRepresentPhotoInit}`);
+      //Injecter la nouvelle adresse dans le body
+
+      //Récupération d'adresse de l'image initiale
+      const compagnyPresentationFileInit = data.compagnyPresentationFile.split(
+        "/images/"
+      )[1];
+      //Supression de l'image initiale
+      //fs.unlinkSync(`images/${compagnyPresentationFileInit}`);
+      //Injecter la nouvelle adresse dans le body*/
+    res.json({ message: "Modifications effectuées" });
+    /* });*/
+  },
   deleteProfil: (req, res) => {
     const userId = req.body._id;
     Membership.findOne({ _id: userId }, (err, data) => {

@@ -17,7 +17,7 @@ routerProfil.get("/uploadAllActive", profil.findAllActiveProfil);
 //Activation d'un membre
 routerProfil.put("/activate", auth, profil.updateActivateProfil);
 //Modification de la collection membre
-/*routerProfil.put("/save", profil.updateProfil);*/
+routerProfil.put("/updateProfil", auth, multer, profil.updateProfil);
 //Modification du mot de passe du membre
 routerProfil.delete("/delete", auth, profil.deleteProfil);
 //Modification du mot de passe du membre
